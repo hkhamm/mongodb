@@ -21,10 +21,13 @@ from flask import url_for
 
 import json
 import logging
+import uuid
+import CONFIG
+import sys
 
 # Date handling 
-import arrow # Replacement for datetime, based on moment.js
-import datetime # But we may still need time
+import arrow  # Replacement for datetime, based on moment.js
+import datetime  # But we may still need time
 from dateutil import tz  # For interpreting local times
 
 # Mongo database
@@ -34,21 +37,19 @@ from pymongo import MongoClient
 ###
 # Globals
 ###
-import CONFIG
-
 app = flask.Flask(__name__)
 
-try: 
+try:
     dbclient = MongoClient(CONFIG.MONGO_URL)
     db = dbclient.memos
     collection = db.dated
-
 except:
     print("Failure opening database.  Is Mongo running? Correct password?")
     sys.exit(1)
 
-import uuid
+
 app.secret_key = str(uuid.uuid4())
+
 
 ###
 # Pages
@@ -57,11 +58,11 @@ app.secret_key = str(uuid.uuid4())
 @app.route("/")
 @app.route("/index")
 def index():
-  app.logger.debug("Main page entry")
-  flask.session['memos'] = get_memos()
-  for memo in flask.session['memos']:
-      app.logger.debug("Memo: " + str(memo))
-  return flask.render_template('index.html')
+    app.logger.debug("Main page entry")
+    flask.session['memos'] = get_memos()
+    for memo in flask.session['memos']:
+        app.logger.debug("Memo: " + str(memo))
+    return flask.render_template('index.html')
 
 
 # We don't have an interface for creating memos yet
@@ -78,6 +79,7 @@ def page_not_found(error):
                                  badurl=request.base_url,
                                  linkback=url_for("index")), 404
 
+
 #################
 #
 # Functions used within the templates
@@ -85,7 +87,7 @@ def page_not_found(error):
 #################
 
 # NOT TESTED with this application; may need revision 
-#@app.template_filter( 'fmtdate' )
+# @app.template_filter( 'fmtdate' )
 # def format_arrow_date( date ):
 #     try: 
 #         normal = arrow.get( date )
@@ -93,8 +95,8 @@ def page_not_found(error):
 #     except:
 #         return "(bad date)"
 
-@app.template_filter( 'humanize' )
-def humanize_arrow_date( date ):
+@app.template_filter('humanize')
+def humanize_arrow_date(date):
     """
     Date is internal UTC ISO format string.
     Output should be "today", "yesterday", "in 5 days", etc.
@@ -106,11 +108,11 @@ def humanize_arrow_date( date ):
         now = arrow.utcnow().to('local')
         if then.date() == now.date():
             human = "Today"
-        else: 
+        else:
             human = then.humanize(now)
             if human == "in a day":
                 human = "Tomorrow"
-    except: 
+    except:
         human = date
     return human
 
@@ -125,12 +127,12 @@ def get_memos():
     Returns all memos in the database, in a form that
     can be inserted directly in the 'session' object.
     """
-    records = [ ]
-    for record in collection.find( { "type": "dated_memo" } ):
+    records = []
+    for record in collection.find({"type": "dated_memo"}):
         record['date'] = arrow.get(record['date']).isoformat()
         del record['_id']
         records.append(record)
-    return records 
+    return records
 
 
 # def put_memo(dt, mem):
@@ -153,7 +155,7 @@ if __name__ == "__main__":
     # App is created above so that it will
     # exist whether this is 'main' or not
     # (e.g., if we are running in a CGI script)
-    app.debug=CONFIG.DEBUG
+    app.debug = CONFIG.DEBUG
     app.logger.setLevel(logging.DEBUG)
     # We run on localhost only if debugging,
     # otherwise accessible to world
@@ -162,6 +164,4 @@ if __name__ == "__main__":
         app.run(port=CONFIG.PORT)
     else:
         # Reachable from anywhere 
-        app.run(port=CONFIG.PORT,host="0.0.0.0")
-
-    
+        app.run(port=CONFIG.PORT, host="0.0.0.0")
