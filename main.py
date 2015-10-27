@@ -44,9 +44,8 @@ try:
     db = dbclient.memos
     collection = db.dated
 except:
-    print("Failure opening database.  Is Mongo running? Correct password?")
+    print("Failure opening database. Is Mongo running? Correct password?")
     sys.exit(1)
-
 
 app.secret_key = str(uuid.uuid4())
 
@@ -80,11 +79,7 @@ def page_not_found(error):
                                  linkback=url_for("index")), 404
 
 
-#################
-#
 # Functions used within the templates
-#
-#################
 
 # NOT TESTED with this application; may need revision 
 # @app.template_filter( 'fmtdate' )
@@ -117,11 +112,8 @@ def humanize_arrow_date(date):
     return human
 
 
-#############
-#
 # Functions available to the page code above
-#
-##############
+
 def get_memos():
     """
     Returns all memos in the database, in a form that
@@ -135,20 +127,20 @@ def get_memos():
     return records
 
 
-# def put_memo(dt, mem):
-#     """
-#     Place memo into database
-#     Args:
-#        dt: Datetime (arrow) object
-#        mem: Text of memo
-#     NOT TESTED YET
-#     """
-#     record = { "type": "dated_memo", 
-#                "date": dt.to('utc').naive,
-#                "text": mem
-#             }
-#     collection.insert(record)
-#     return 
+def put_memo(dt, memo):
+    """
+    Place memo into database
+    Args:
+       dt: Datetime (arrow) object
+       memo: Text of memo
+    NOT TESTED YET
+    """
+    record = {"type": "dated_memo",
+              "date": dt.to('utc').naive,
+              "text": memo
+              }
+    collection.insert(record)
+    return
 
 
 if __name__ == "__main__":

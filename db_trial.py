@@ -9,6 +9,7 @@ insert some memos, and read them back
 import arrow
 from pymongo import MongoClient
 import sys
+
 import CONFIG
 
 try:
