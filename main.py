@@ -49,26 +49,67 @@ except:
 
 app.secret_key = str(uuid.uuid4())
 
+memos_list = []
 
 ###
 # Pages
 ###
+
 
 @app.route("/")
 @app.route("/index")
 def index():
     app.logger.debug("Main page entry")
     flask.session['memos'] = get_memos()
+    memos_dict = {}
     for memo in flask.session['memos']:
+        memos_dict[format_arrow_date(memo['date'])] = memo
         app.logger.debug("Memo: " + str(memo))
+    for key in sorted(memos_dict):
+        memos_list.append(memos_dict[key])
+        print("memo: {} {}".format(key, memos_dict[key]))
     return flask.render_template('index.html')
 
 
-# We don't have an interface for creating memos yet
-# @app.route("/create")
-# def create():
-#     app.logger.debug("Create")
-#     return flask.render_template('create.html')
+@app.route("/_add_memo")
+def add_memo():
+    """
+    Insert a memo into the database.
+    """
+    date = arrow.get(request.args.get('date', 0, type=str),
+                     'YYYY/MM/DD').naive
+    text = request.args.get('text', 0, type=str)
+
+    record = {"type": "dated_memo",
+              "date": date,
+              "text": text}
+    collection.insert(record)
+
+    return flask.jsonify(message='success')
+
+
+@app.route("/_remove_memo")
+def remove_memo():
+    """
+    Delete a memo from the database.
+    """
+    date = arrow.get(request.args.get('date', 0, type=str),
+                     'YYYY/MM/DD').naive
+    text = request.args.get('text', 0, type=str).strip()
+
+    print('date: ' + str(date))
+    print('text: ' + text)
+
+    # TODO figure out how to delete using dates
+    # the problem is with the time zone
+
+    record = {"type": "dated_memo",
+              "text": text}
+    result = collection.delete_one(record)
+
+    print('result: ' + str(result.deleted_count))
+
+    return flask.jsonify(message='success')
 
 
 @app.errorhandler(404)
@@ -89,6 +130,7 @@ def page_not_found(error):
 #         return normal.to('local').format("ddd MM/DD/YYYY")
 #     except:
 #         return "(bad date)"
+
 
 @app.template_filter('humanize')
 def humanize_arrow_date(date):
@@ -112,6 +154,11 @@ def humanize_arrow_date(date):
     return human
 
 
+@app.template_filter('format')
+def format_arrow_date(date):
+    return arrow.get(date).format('YYYY/MM/DD')
+
+
 # Functions available to the page code above
 
 def get_memos():
@@ -120,27 +167,14 @@ def get_memos():
     can be inserted directly in the 'session' object.
     """
     records = []
+    records_dict = {}
     for record in collection.find({"type": "dated_memo"}):
         record['date'] = arrow.get(record['date']).isoformat()
         del record['_id']
-        records.append(record)
+        records_dict[format_arrow_date(record['date'])] = record
+    for key in sorted(records_dict):
+        records.append(records_dict[key])
     return records
-
-
-def put_memo(dt, memo):
-    """
-    Place memo into database
-    Args:
-       dt: Datetime (arrow) object
-       memo: Text of memo
-    NOT TESTED YET
-    """
-    record = {"type": "dated_memo",
-              "date": dt.to('utc').naive,
-              "text": memo
-              }
-    collection.insert(record)
-    return
 
 
 if __name__ == "__main__":

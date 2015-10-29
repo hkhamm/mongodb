@@ -3,13 +3,14 @@
  *    Styles for 'Memos' go in this file 
  */
 
-/* Nothing yet */
-
-.lyrics {
-    margin-left: 3em;
-    font-style: italic;
+body {
+    min-width: 250px;
 }
 
-.attribution  {
-    font-size: smaller;
+button {
+    margin-left: 15px;
+}
+
+#memo {
+    padding-bottom: 15px;
 }

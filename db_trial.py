@@ -25,17 +25,25 @@ except:
 # run successfully inserted them
 # 
 
-record = {"type": "dated_memo",
-          "date": arrow.utcnow().naive,
-          "text": "This is a sample memo"
-          }
-collection.insert(record)
+# record = {"type": "dated_memo",
+#           "date": arrow.utcnow().naive,
+#           "text": "This is a sample memo"
+#           }
+# collection.insert(record)
+#
+# record = {"type": "dated_memo",
+#           "date": arrow.utcnow().replace(days=+1).naive,
+#           "text": "Sample one day later"
+#           }
+# collection.insert(record)
 
-record = {"type": "dated_memo",
-          "date": arrow.utcnow().replace(days=+1).naive,
-          "text": "Sample one day later"
-          }
-collection.insert(record)
+# date = arrow.get('2014-12-31T23:00:00', 'YYYY-MM-DDTHH:mm:ss').replace(
+#     hours=+1).to('local')
+#
+# print(date)
+
+record = {'type': 'dated_memo', 'text': 'this is a test'}
+result = collection.delete_one(record)
 
 #
 # Read database --- May be useful to see what is in there,

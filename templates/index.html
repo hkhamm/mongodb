@@ -1,7 +1,7 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
-<html> <head>
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
 <title>Memos</title>
-
   <!-- 'viewport' is used by bootstrap to respond to device size -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,14 +13,17 @@
   <!-- Bootstrap includes javascript and css  (must follow jquery) -->
   <link rel="stylesheet"
    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-   <script
+  <script
     src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
-</script>
+  </script>
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js">
+  </script>
+  <script src="/static/js/moment.js"></script>
 
    <!-- Our own style sheet -->
    <link rel="stylesheet" href="/static/css/memos.css" />
-
-
 </head>
 <body>
 <div class="container">
@@ -38,25 +41,68 @@
 
 <h1>Memos</h1>
 
-{% if session.memos %}
-    {% for memo in session.memos %}
-  <div class="memo">
-  <div class="row">
-  <div class="col-md-2">
-    {{ memo.date | humanize }}
-  </div>
-  <div class="col-md-10">
-    {{ memo.text }}
-  </div>
-  </div> <!-- row -->
-  </div> <!-- memo -->
-  {% endfor %}
-{% else %}
-  <p>No memos for you. </p>  
-{% endif %}
+<div class="row hidden-xs hidden-sm memo-labels" id="memo-labels">
+    <label class="col-md-2">Date</label>
+    <label class="col-md-9">Text</label>
+    <label class="col-md-1">&nbsp;</label>
+</div>
 
- 
+<div class="row no-memos-message" id="no-memos-message">
+  <label class="col-md-12">No memos for you. :(</label>
+  <div class="col-md-12">&nbsp;</div>
+</div>
+
+<div id="memos">
+{% if session.memos %}
+  {% for memo in session.memos %}
+  <div class="row" id="memo">
+    <div class="col-md-2" id="memo_date">
+      {{ memo.date | format }}
+    </div>
+    <div class="col-md-9" id="memo_text">
+      {{ memo.text }}
+    </div>
+    <button class="btn btn-danger" id="remove-button"
+              type="button" name="remove-button">
+        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+    </button>
+  </div>
+  {% endfor %}
+{% endif %}
+  <div class="row copy-memo" id="memo">
+    <div class="col-md-2" id="memo_date">
+    </div>
+    <div class="col-md-9" id="memo_text">
+    </div>
+    <button class="btn btn-danger" id="remove-button"
+              type="button" name="remove-button">
+        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+    </button>
+  </div>
+</div>
+
+<div class="row" id="memo-list">
+  <label class="col-md-2">Add Memo</label>
+  <label class="col-md-9">&nbsp;</label>
+  <label class="col-md-1">&nbsp;</label>
+  <div class="col-md-2">
+    <input type="text" class="form-control" id="date"
+           name="checkpoint" placeholder="Date: YYYY/MM/DD"/>
+  </div>
+  <div class="col-md-9">
+    <input type="text" class="form-control" id="text"
+           placeholder="Text"/>
+  </div>
+  <button class="btn btn-success" id="add-button" type="button">
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+  </button>
+</div>
 
 </div> <!-- container -->
+
+<script type="text/javascript">
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<script src="/static/js/memos.js"></script>
 </body>
 </html>
