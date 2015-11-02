@@ -8,6 +8,7 @@ Simple web-based list of dated memos kept in a MongoDB database accessed with Fl
 - [jQuery](https://jquery.com/)
 - [Boostrap](http://getbootstrap.com/)
 - [Moment](http://momentjs.com/)
+- [Jinja2](http://jinja.pocoo.org/)
 
 #### Server
 
