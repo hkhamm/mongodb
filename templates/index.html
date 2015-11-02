@@ -55,7 +55,7 @@
 <div id="memos">
 {% if session.memos %}
   {% for memo in session.memos %}
-  <div class="row" id="memo">
+  <div class="row" id="memo" data-object_id="{{ memo._id }}">
     <div class="col-md-2" id="memo_date">
       {{ memo.date | format }}
     </div>
@@ -69,7 +69,7 @@
   </div>
   {% endfor %}
 {% endif %}
-  <div class="row copy-memo" id="memo">
+  <div class="row copy-memo" id="memo" data-object_id="">
     <div class="col-md-2" id="memo_date">
     </div>
     <div class="col-md-9" id="memo_text">
@@ -81,12 +81,20 @@
   </div>
 </div>
 
-<div class="row" id="memo-list">
+<div class="row">
   <label class="col-md-2">Add Memo</label>
   <label class="col-md-9">&nbsp;</label>
   <label class="col-md-1">&nbsp;</label>
+</div>
+
+<div class="row" id="memo-list">
+  <label class="col-md-2 hidden-sm hidden-xs">Date</label>
+  <label class="col-md-9 hidden-sm hidden-xs">Text</label>
+  <label class="col-md-1 hidden-sm hidden-xs">&nbsp;</label>
   <div class="col-md-2">
-    <input type="text" class="form-control" id="date"
+    <input type="text" class="form-control hidden-sm hidden-xs" id="date"
+           name="checkpoint" placeholder="YYYY/MM/DD"/>
+    <input type="text" class="form-control hidden-md hidden-lg" id="date"
            name="checkpoint" placeholder="Date: YYYY/MM/DD"/>
   </div>
   <div class="col-md-9">

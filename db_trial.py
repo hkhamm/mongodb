@@ -57,7 +57,10 @@ for record in collection.find({"type": "dated_memo"}):
     records.append(
         {"type": record['type'],
          "date": arrow.get(record['date']).to('local').isoformat(),
-         "text": record['text']
+         "text": record['text'],
+         "_id": str(record['_id'])
          })
+
+test = ObjectId
 
 print(records)

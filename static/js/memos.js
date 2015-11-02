@@ -43,6 +43,8 @@ memos.addButton.click(function() {
   var oldMemo = $('#memo:first');
   var newMemo = $(oldMemo.clone());
 
+  // TODO validate date before insert
+
   memos.insertMemo(date, newMemo);
 
   if (memos.memoCount == 0) {
@@ -67,8 +69,6 @@ memos.addButton.click(function() {
     memos.removeMemo($(this));
   });
 
-  // TODO need to place in date order
-
   $.getJSON($SCRIPT_ROOT + '/_add_memo', {
     date: date,
     text: text
@@ -83,12 +83,12 @@ memos.addButton.click(function() {
 memos.removeButton.click(function() {
   var date = $(this).parent().find('#memo_date').text();
   var text = $(this).parent().find('#memo_text').text();
+  var object_id = $(this).parent().data('object_id');
 
   memos.removeMemo($(this));
 
   $.getJSON($SCRIPT_ROOT + '/_remove_memo', {
-    date: date,
-    text: text
+    object_id: object_id
   }, function(data) {
     //console.log(data.message);
   });

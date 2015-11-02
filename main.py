@@ -14,6 +14,7 @@ Representation conventions for dates:
    Greenwich may not be 'today' here. 
 """
 
+
 import flask
 from flask import render_template
 from flask import request
@@ -32,6 +33,7 @@ from dateutil import tz  # For interpreting local times
 
 # Mongo database
 from pymongo import MongoClient
+from bson import ObjectId
 
 
 ###
@@ -49,7 +51,6 @@ except:
 
 app.secret_key = str(uuid.uuid4())
 
-memos_list = []
 
 ###
 # Pages
@@ -61,13 +62,6 @@ memos_list = []
 def index():
     app.logger.debug("Main page entry")
     flask.session['memos'] = get_memos()
-    memos_dict = {}
-    for memo in flask.session['memos']:
-        memos_dict[format_arrow_date(memo['date'])] = memo
-        app.logger.debug("Memo: " + str(memo))
-    for key in sorted(memos_dict):
-        memos_list.append(memos_dict[key])
-        print("memo: {} {}".format(key, memos_dict[key]))
     return flask.render_template('index.html')
 
 
@@ -93,21 +87,13 @@ def remove_memo():
     """
     Delete a memo from the database.
     """
-    date = arrow.get(request.args.get('date', 0, type=str),
-                     'YYYY/MM/DD').naive
-    text = request.args.get('text', 0, type=str).strip()
-
-    print('date: ' + str(date))
-    print('text: ' + text)
-
-    # TODO figure out how to delete using dates
-    # the problem is with the time zone
+    object_id = request.args.get('object_id', 0, type=str)
 
     record = {"type": "dated_memo",
-              "text": text}
+              "_id": ObjectId(object_id)}
     result = collection.delete_one(record)
 
-    print('result: ' + str(result.deleted_count))
+    app.logger.debug('result: ' + str(result.deleted_count))
 
     return flask.jsonify(message='success')
 
@@ -170,7 +156,7 @@ def get_memos():
     records_dict = {}
     for record in collection.find({"type": "dated_memo"}):
         record['date'] = arrow.get(record['date']).isoformat()
-        del record['_id']
+        record['_id'] = str(record['_id'])
         records_dict[format_arrow_date(record['date'])] = record
     for key in sorted(records_dict):
         records.append(records_dict[key])
