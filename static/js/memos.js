@@ -177,8 +177,9 @@ memos.checkDate = function(date) {
 
   if (!regex.test(date) &&
       !memos.alerts.find('#dateAlert' + memos.memoCount).length) {
-    memos.alert('The date you just entered is not in the correct form: ' +
-                'YYYY/MM/DD', 'dateAlert' + memos.memoCount);
+    memos.alert('The date you just entered is not valid. It must be an real' +
+      ' date and be in the correct form: YYYY/MM/DD',
+      'dateAlert' + memos.memoCount);
     console.log(date);
     is_valid = false;
   }
