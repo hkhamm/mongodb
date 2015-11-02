@@ -1,3 +1,10 @@
+/**
+ * Simple web-based list of dated memos kept in a MongoDB database accessed
+ * with Flask.
+ * @author H. Keith Hamm
+ * @date: Fall 2015
+ */
+
 var memos = {};
 
 

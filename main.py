@@ -1,17 +1,10 @@
 """
-Flask web app connects to Mongo database.
-Keep a simple list of dated memoranda.
+Simple web-based list of dated memos kept in a MongoDB database accessed
+with Flask.
 
-Representation conventions for dates: 
-   - In the session object, date or datetimes are represented as
-   ISO format strings in UTC.  Unless otherwise specified, this
-   is the format passed around internally. Note that ordering
-   of ISO format strings is consistent with date/time order
-   - User input/output is in local (to the server) time
-   - Database representation is as MongoDB 'Date' objects
-   Note that this means the database may store a date before or after
-   the date specified and viewed by the user, because 'today' in
-   Greenwich may not be 'today' here. 
+@author H. Keith Hamm
+@date: Fall 2015
+
 """
 
 
@@ -36,9 +29,8 @@ from pymongo import MongoClient
 from bson import ObjectId
 
 
-###
+
 # Globals
-###
 app = flask.Flask(__name__)
 
 try:
@@ -52,10 +44,7 @@ except:
 app.secret_key = str(uuid.uuid4())
 
 
-###
 # Pages
-###
-
 
 @app.route("/")
 @app.route("/index")
@@ -120,16 +109,6 @@ def page_not_found(error):
 
 # Functions used within the templates
 
-# NOT TESTED with this application; may need revision 
-# @app.template_filter( 'fmtdate' )
-# def format_arrow_date( date ):
-#     try: 
-#         normal = arrow.get( date )
-#         return normal.to('local').format("ddd MM/DD/YYYY")
-#     except:
-#         return "(bad date)"
-
-
 @app.template_filter('humanize')
 def humanize_arrow_date(date):
     """
@@ -154,6 +133,7 @@ def humanize_arrow_date(date):
 
 @app.template_filter('format')
 def format_arrow_date(date):
+
     return arrow.get(date).format('YYYY/MM/DD')
 
 

@@ -29,8 +29,6 @@
 <body>
 <div class="container">
 
-<div id="alerts"></div>
-
 <!-- Flashed messages before content -->
 {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -43,6 +41,8 @@
 {% endwith %}
 
 <h1>Memos</h1>
+
+<div id="alerts"></div>
 
 <div class="row hidden-xs hidden-sm memo-labels" id="memo-labels">
     <label class="col-md-2">Date</label>
