@@ -11,6 +11,7 @@ memos.memosDiv = $('#memos');
 memos.copyMemo = $('.copy-memo');
 memos.noMemosMessage = $('#no-memos-message');
 memos.memoLabels = $('.memo-labels');
+memos.alerts = $('#alerts');
 memos.memoCount = 0;
 
 
@@ -40,10 +41,55 @@ memos.memoCount = 0;
 memos.addButton.click(function() {
   var date = memos.dateField.val();
   var text = memos.textField.val();
+
+  if (!memos.checkDate(date)) {
+    return;
+  }
+
+  $.getJSON($SCRIPT_ROOT + '/_add_memo', {
+    date: date,
+    text: text
+  }, function(data) {
+    console.log(data.message);
+
+    if (data.result == true) {
+      memos.addMemo(date, text);
+    }
+  });
+});
+
+
+/**
+ * Listens for clicks on the remove memo button for memos that are present
+ * when the page is loaded.
+ */
+memos.removeButton.click(function() {
+  var object_id = $(this).parent().data('object_id');
+  var memo = $(this);
+
+  $.getJSON($SCRIPT_ROOT + '/_remove_memo', {
+    object_id: object_id
+  }, function(data) {
+    console.log(data.message);
+
+    if (data.result == true) {
+      memos.removeMemo(memo);
+    }
+  });
+});
+
+
+// Other functions
+
+/**
+ * Adds a memo to the memos div.
+ *
+ * @param date is the memo's date.
+ * @param text is the memo's text.
+ */
+memos.addMemo = function(date, text) {
   var oldMemo = $('#memo:first');
   var newMemo = $(oldMemo.clone());
-
-  // TODO validate date before insert
 
   memos.insertMemo(date, newMemo);
 
@@ -68,37 +114,12 @@ memos.addButton.click(function() {
   newMemo.find('#remove-button').click(function() {
     memos.removeMemo($(this));
   });
+};
 
-  $.getJSON($SCRIPT_ROOT + '/_add_memo', {
-    date: date,
-    text: text
-  }, function(data) {
-    //console.log(data.message);
-  });
-});
 
 /**
- * Listens for clicks on the remove memo button.
- */
-memos.removeButton.click(function() {
-  var date = $(this).parent().find('#memo_date').text();
-  var text = $(this).parent().find('#memo_text').text();
-  var object_id = $(this).parent().data('object_id');
-
-  memos.removeMemo($(this));
-
-  $.getJSON($SCRIPT_ROOT + '/_remove_memo', {
-    object_id: object_id
-  }, function(data) {
-    //console.log(data.message);
-  });
-});
-
-
-// Other functions
-
-/**
- * Removes a memo.
+ * Removes a memo from the memos div.
+ *
  * @param button is the pressed remove button
  */
 memos.removeMemo = function(button) {
@@ -118,6 +139,7 @@ memos.removeMemo = function(button) {
 
 /**
  * Inserts a memo in ascending date order.
+ *
  * @param date is the memo's dat
  * @param newMemo is the memo to insert.
  */
@@ -133,4 +155,41 @@ memos.insertMemo = function(date, newMemo) {
       isInserted = true;
     }
   });
+};
+
+
+/**
+ * Checks if a date is in the valid form: YYYY/MM/DD.
+ *
+ * @param date
+ * @returns {boolean}
+ */
+memos.checkDate = function(date) {
+  var is_valid = true;
+  var regex = /[0-9][0-9][0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]/;
+
+  if (!regex.test(date) &&
+      !memos.alerts.find('#dateAlert' + memos.memoCount).length) {
+    memos.alert('The date you just entered is not in the correct form: ' +
+                'YYYY/MM/DD', 'dateAlert' + memos.memoCount);
+    is_valid = false;
+  }
+
+  return is_valid;
+};
+
+
+/**
+ * Creates a Bootstrap alert.
+ *
+ * @param message The alert message.
+ * @param alert_type The alert type.
+ */
+memos.alert = function(message, alert_type) {
+  var alertMsg = '<div class="alert alert-danger alert-dismissible" \
+  role="alert" id="' + alert_type + '"><button type="button" class="close" \
+  data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;\
+  </span></button><strong>Warning!</strong> ' + message + '</div>';
+
+  memos.alerts.append(alertMsg);
 };

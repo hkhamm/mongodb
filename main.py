@@ -70,16 +70,22 @@ def add_memo():
     """
     Insert a memo into the database.
     """
-    date = arrow.get(request.args.get('date', 0, type=str),
-                     'YYYY/MM/DD').naive
-    text = request.args.get('text', 0, type=str)
+    try:
+        date = arrow.get(request.args.get('date', 0, type=str),
+                         'YYYY/MM/DD').naive
+        text = request.args.get('text', 0, type=str)
 
-    record = {"type": "dated_memo",
-              "date": date,
-              "text": text}
-    collection.insert(record)
+        record = {"type": "dated_memo",
+                  "date": date,
+                  "text": text}
+        collection.insert(record)
+        message = 'Memo added.'
+        result = True
+    except:
+        message = 'Memo not added.'
+        result = False
 
-    return flask.jsonify(message='success')
+    return flask.jsonify(message=message, result=result)
 
 
 @app.route("/_remove_memo")
@@ -87,15 +93,21 @@ def remove_memo():
     """
     Delete a memo from the database.
     """
-    object_id = request.args.get('object_id', 0, type=str)
+    try:
+        object_id = request.args.get('object_id', 0, type=str)
 
-    record = {"type": "dated_memo",
-              "_id": ObjectId(object_id)}
-    result = collection.delete_one(record)
+        record = {"type": "dated_memo",
+                  "_id": ObjectId(object_id)}
+        result = collection.delete_one(record)
 
-    app.logger.debug('result: ' + str(result.deleted_count))
+        app.logger.debug('result: ' + str(result.deleted_count))
+        message = 'Memo removed.'
+        result = True
+    except:
+        message = 'Memo not removed.'
+        result = False
 
-    return flask.jsonify(message='success')
+    return flask.jsonify(message=message, result=result)
 
 
 @app.errorhandler(404)
