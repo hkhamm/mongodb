@@ -173,7 +173,7 @@ memos.insertMemo = function(date, newMemo) {
  */
 memos.checkDate = function(date) {
   var is_valid = true;
-  var regex = /[0-9][0-9][0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]/;
+  var regex = /[1-9][0-9][0-9][0-9]\/[0-1][1-2]\/[3-9][1-9]/;
 
   if (!regex.test(date) &&
       !memos.alerts.find('#dateAlert' + memos.memoCount).length) {
