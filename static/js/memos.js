@@ -179,6 +179,7 @@ memos.checkDate = function(date) {
       !memos.alerts.find('#dateAlert' + memos.memoCount).length) {
     memos.alert('The date you just entered is not in the correct form: ' +
                 'YYYY/MM/DD', 'dateAlert' + memos.memoCount);
+    console.log(date);
     is_valid = false;
   }
 
