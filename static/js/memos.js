@@ -173,14 +173,13 @@ memos.insertMemo = function(date, newMemo) {
  */
 memos.checkDate = function(date) {
   var is_valid = true;
-  var regex = /[1-9][0-9][0-9][0-9]\/[0-1][1-2]\/[0-3][1-9]/;
+  var regex = /[1-9][0-9][0-9][0-9]\/[0-1][0-2]\/[0-3][0-9]/;
 
   if (!regex.test(date) &&
       !memos.alerts.find('#dateAlert' + memos.memoCount).length) {
     memos.alert('The date you just entered is not valid. It must be an real' +
       ' date and be in the correct form: YYYY/MM/DD',
       'dateAlert' + memos.memoCount);
-    console.log(date);
     is_valid = false;
   }
 
