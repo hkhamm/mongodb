@@ -201,7 +201,7 @@ memos.checkDate = function(date) {
     is_day = true;
   }
 
-  if (!regex.test(date) && is_day && is_month &&
+  if (!regex.test(date) && !is_day && !is_month &&
       !memos.alerts.find('#dateAlert' + memos.memoCount).length) {
     memos.alert('The date you just entered is not valid. It must be an real' +
       ' date and be in the correct form: YYYY/MM/DD',
