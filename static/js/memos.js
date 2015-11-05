@@ -186,9 +186,22 @@ memos.insertMemo = function(date, newMemo) {
  */
 memos.checkDate = function(date) {
   var is_valid = true;
+  var is_month = false;
+  var is_day = false;
   var regex = /[0-9][0-9][0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]/;
 
-  if (!regex.test(date) &&
+  var month = parseInt(date.substring(5, 7));
+  var day = parseInt(date.substring(8));
+
+  if (0 < month <= 12) {
+    is_month = true;
+  }
+
+  if (0 < day <= 31) {
+    is_day = true;
+  }
+
+  if (!regex.test(date) && is_day && is_month &&
       !memos.alerts.find('#dateAlert' + memos.memoCount).length) {
     memos.alert('The date you just entered is not valid. It must be an real' +
       ' date and be in the correct form: YYYY/MM/DD',
