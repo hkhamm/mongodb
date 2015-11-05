@@ -60,7 +60,7 @@ memos.addButton.click(function() {
     console.log(data.message);
 
     if (data.result == true) {
-      memos.addMemo(date, text);
+      memos.addMemo(date, text, data.record_id);
     }
   });
 });
@@ -93,8 +93,9 @@ memos.removeButton.click(function() {
  *
  * @param date is the memo's date.
  * @param text is the memo's text.
+ * @param record_id is the Mongo record id.
  */
-memos.addMemo = function(date, text) {
+memos.addMemo = function(date, text, record_id) {
   var oldMemo = $('#memo:first');
   var newMemo = $(oldMemo.clone());
 
@@ -117,6 +118,7 @@ memos.addMemo = function(date, text) {
   newMemo.find('div').text('');
   newMemo.find('#memo_date').text(date);
   newMemo.find('#memo_text').text(text);
+  newMemo.data('object_id').val(record_id);
 
   newMemo.find('#remove-button').click(function() {
     var object_id = $(this).parent().data('object_id');
@@ -158,7 +160,7 @@ memos.removeMemo = function(button) {
 /**
  * Inserts a memo in ascending date order.
  *
- * @param date is the memo's dat
+ * @param date is the memo's date
  * @param newMemo is the memo to insert.
  */
 memos.insertMemo = function(date, newMemo) {

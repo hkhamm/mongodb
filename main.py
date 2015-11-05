@@ -68,13 +68,18 @@ def add_memo():
                   "date": date,
                   "text": text}
         collection.insert(record)
+        record = collection.find(record)
+        record_id = record['_id']
+        print(record_id)
+
         message = 'Memo added.'
         result = True
     except:
         message = 'Memo not added.'
+        record_id = ''
         result = False
 
-    return flask.jsonify(message=message, result=result)
+    return flask.jsonify(message=message, record_id=record_id, result=result)
 
 
 @app.route("/_remove_memo")
