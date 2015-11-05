@@ -193,6 +193,8 @@ memos.checkDate = function(date) {
   var month = parseInt(date.substring(5, 7));
   var day = parseInt(date.substring(8));
 
+  console.log(month + " " + day);
+
   if (0 < month <= 12) {
     is_month = true;
   }
