@@ -118,7 +118,7 @@ memos.addMemo = function(date, text, record_id) {
   newMemo.find('div').text('');
   newMemo.find('#memo_date').text(date);
   newMemo.find('#memo_text').text(text);
-  newMemo.data('object_id').val(record_id);
+  newMemo.data('object_id', record_id);
 
   newMemo.find('#remove-button').click(function() {
     var object_id = $(this).parent().data('object_id');

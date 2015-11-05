@@ -69,7 +69,6 @@ def add_memo():
                   "text": text}
         result = collection.insert_one(record)
         record_id = str(result.inserted_id)
-        app.logger.debug('record id:' + record_id)
 
         message = 'Memo added.'
         worked = True
