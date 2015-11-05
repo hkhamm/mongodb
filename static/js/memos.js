@@ -119,7 +119,18 @@ memos.addMemo = function(date, text) {
   newMemo.find('#memo_text').text(text);
 
   newMemo.find('#remove-button').click(function() {
-    memos.removeMemo($(this));
+    var object_id = $(this).parent().data('object_id');
+    var memo = $(this);
+
+    $.getJSON($SCRIPT_ROOT + '/_remove_memo', {
+      object_id: object_id
+    }, function(data) {
+      console.log(data.message);
+
+      if (data.result == true) {
+        memos.removeMemo(memo);
+      }
+    });
   });
 };
 
