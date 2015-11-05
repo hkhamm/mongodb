@@ -67,7 +67,7 @@ def add_memo():
         record = {"type": "dated_memo",
                   "date": date,
                   "text": text}
-        result = collection.insert(record)
+        result = collection.insert_one(record)
         record_id = str(result.inserted_id)
         app.logger.debug('record id:' + record_id)
 
