@@ -67,9 +67,8 @@ def add_memo():
         record = {"type": "dated_memo",
                   "date": date,
                   "text": text}
-        collection.insert(record)
-        record = collection.find(record)
-        record_id = record['_id']
+        result = collection.insert(record)
+        record_id = result.inserted_id
         print(record_id)
 
         message = 'Memo added.'
