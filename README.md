@@ -4,6 +4,8 @@ Simple web-based list of dated memos kept in a MongoDB database accessed with Fl
 
 ### Installation and Execution
 
+Edit CONFIG.py for your environment.
+
 ```shell
 cd /path/to/proj5-mongo
 mkdir env
