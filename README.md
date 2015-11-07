@@ -16,7 +16,7 @@ cd /path/to/proj5-mongo
 make
 ```
 
-5) Run the flask app.
+5) Run the flask app:
 ```shell
 cd /path/to/proj5-mongo
 source env/bin/activate
