@@ -1,6 +1,22 @@
 # proj5-mongo
 Simple web-based list of dated memos kept in a MongoDB database accessed with Flask.
 
+
+### Installation and Execution
+
+Installation:
+`shell
+cd /path/to/proj5-mongo
+mkdir env
+source env/bin/activate
+make
+`
+
+Execution
+`shell
+cd /path/to/proj5-mongo
+`
+
 ### Resources
 
 #### Website
