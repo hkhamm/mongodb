@@ -4,17 +4,22 @@ Simple web-based list of dated memos kept in a MongoDB database accessed with Fl
 
 ### Installation and Execution
 
-Edit CONFIG.py for your environment.
+1) Install and setup mongodb.
 
+2) Download the repository.
+
+3) Edit CONFIG.py for your environment (including your mongodb settings).
+
+4) Setup the virtual enviroment:
 ```shell
 cd /path/to/proj5-mongo
-mkdir env
-source env/bin/activate
 make
 ```
 
+5) Run the flask app.
 ```shell
 cd /path/to/proj5-mongo
+source env/bin/activate
 python3 main.py
 ```
 
