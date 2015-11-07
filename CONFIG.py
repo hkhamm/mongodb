@@ -19,4 +19,4 @@ MONGO_PW = ''
 MONGO_USER = ''
 MONGO_PORT = 
 MONGO_DB = ''
-MONGO_URL = 'mongodb://{$MONGO_USER}:{$MONGO_PW}@localhost:{$MONGO_PORT}/{MONGO_DB}'
+MONGO_URL = 'mongodb://{$MONGO_USER}:{$MONGO_PW}@localhost:{$MONGO_PORT}/{$MONGO_DB}'
