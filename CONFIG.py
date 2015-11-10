@@ -16,7 +16,8 @@ MONGO_PORT = 4152
 DEBUG = False  # Because it's unsafe to run outside localhost
 
 # both
-MONGO_USER = 'memos_user'
-MONGO_PW = 'peach-cobbler'
-MONGO_DB = 'memos'
-MONGO_URL = 'mongodb://{$MONGO_USER}:{$MONGO_PW}@localhost:{$MONGO_PORT}/{$MONGO_DB}'
+MONGO_URL = "mongodb://memos_user:peach-cobbler@localhost:4152/memos"
+# MONGO_USER = 'memos_user'
+# MONGO_PW = 'peach-cobbler'
+# MONGO_DB = 'memos'
+# MONGO_URL = 'mongodb://{$MONGO_USER}:{$MONGO_PW}@localhost:{$MONGO_PORT}/{$MONGO_DB}'
