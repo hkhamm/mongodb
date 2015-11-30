@@ -23,6 +23,13 @@ source env/bin/activate
 python3 main.py
 ```
 
+### Usage
+
+Add a memo: Enter a date in the Date field and optionally add a memo text into the memo text field. Then press the green plus button to add it.
+
+Remove a memo: Click on the red trash button next to the memo you want to remove.
+
+
 ### Resources
 
 #### Website
