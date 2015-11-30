@@ -25,9 +25,9 @@ python3 main.py
 
 ### Usage
 
-Add a memo: Enter a date in the Date field and optionally add a memo text into the memo text field. Then press the green plus button to add it.
+**Add a memo:** Enter a date in the Date field and optionally add a memo text into the memo text field. Then press the green plus button to add it. Memos are added to the list in ascending order by date.
 
-Remove a memo: Click on the red trash button next to the memo you want to remove.
+**Remove a memo:** Click on the red trash button next to the memo you want to remove.
 
 
 ### Resources
